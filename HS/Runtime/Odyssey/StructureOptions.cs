@@ -7,5 +7,6 @@ public class StructureOptions : MonoBehaviour
     public bool preloadMemeTexture = false;
     public bool lookAtParent = true;
     public bool randomRotation = false;
+    public bool alwaysUpdateTextures = false;
     public bool onlyHighQualityTextures = false;
 }
