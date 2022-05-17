@@ -14,11 +14,21 @@ namespace HS
     {
         public bool IsControlling { get; set; }
         public bool IsPaused { get; set; }
+        public float CruiseSpeed { get; set; }
+        public float BoostSpeed { get; set; }
     }
 
     public class ThirdPersonController : MonoBehaviour, IThirdPersonController
     {
-        public ControllerSettings Settings { get; set; }
+        public ControllerSettings Settings
+        {
+            get { return _settings; }
+            set
+            {
+                _settings = value;
+            }
+        }
+        private ControllerSettings _settings = null;
 
         #region UI
 
@@ -93,6 +103,17 @@ namespace HS
         DampedFloat _mouseInY = new DampedFloat(0);
         DampedVector3 _motionIn = new DampedVector3();
 
+        public float CruiseSpeed
+        {
+            get { return _cruiseSpeed; }
+            set { }
+        }
+
+        public float BoostSpeed
+        {
+            get { return _maxSpeed; }
+            set { }
+        }
 
         public System.Func<Vector3, Vector3, Vector3> OnConstraint;
         public bool IsControlling { get { return _isControlling; } set { _isControlling = value; } }
@@ -160,9 +181,8 @@ namespace HS
             _defaultAvatar = AvatarSlot.GetComponentInChildren<AvatarDriver>();
             _currentAvatar = _defaultAvatar;
 
-            Settings = new ControllerSettings();
+            _settings = new ControllerSettings();
         }
-
 
         private void Start()
         {
@@ -243,32 +263,32 @@ namespace HS
             if (_enableMovement)
             {
                 Vector3 deltaPosition = Vector3.zero;
-                float currentSpeed = Settings.MovementSpeed;
+                float currentSpeed = _settings.MovementSpeed;
 
                 if (!IsPaused)
                 {
                     if (boost)
-                        currentSpeed = Settings.BoostedSpeed;
+                        currentSpeed = _settings.BoostedSpeed;
 
                     float vertAxis = Input.GetAxis("Vertical");
-                    if (Input.GetKey(Settings.ForwardKey) || Input.GetKey(Settings.ForwardKeyAlternative) || vertAxis > DEADZONE)
+                    if (Input.GetKey(_settings.ForwardKey) || Input.GetKey(_settings.ForwardKeyAlternative) || vertAxis > DEADZONE)
                     {
                         motionInput = true;
                         deltaPosition += transform.forward;
                     }
-                    if (Input.GetKey(Settings.BackKey) || Input.GetKey(Settings.BackKeyAlternative) || vertAxis < -DEADZONE)
+                    if (Input.GetKey(_settings.BackKey) || Input.GetKey(_settings.BackKeyAlternative) || vertAxis < -DEADZONE)
                     {
                         motionInput = true;
                         deltaPosition -= transform.forward;
                     }
 
                     float horzAxis = Input.GetAxis("Horizontal");
-                    if (Input.GetKey(Settings.LeftKey) || Input.GetKey(Settings.LeftKeyAlternative) || horzAxis < -DEADZONE)
+                    if (Input.GetKey(_settings.LeftKey) || Input.GetKey(_settings.LeftKeyAlternative) || horzAxis < -DEADZONE)
                     {
                         motionInput = true;
                         deltaPosition -= transform.right;
                     }
-                    if (Input.GetKey(Settings.RightKey) || Input.GetKey(Settings.RightKeyAlternative) || horzAxis > DEADZONE)
+                    if (Input.GetKey(_settings.RightKey) || Input.GetKey(_settings.RightKeyAlternative) || horzAxis > DEADZONE)
                     {
                         motionInput = true;
                         deltaPosition += transform.right;
@@ -317,7 +337,7 @@ namespace HS
             float gamepadLookX = Input.GetAxis("GamepadLookX");
             bool gamepadLook = Mathf.Abs(gamepadLookY) > DEADZONE || Mathf.Abs(gamepadLookX) > DEADZONE;
             // Looking around
-            bool look = Input.GetKey(Settings.LookKey) || Input.GetKey(Settings.LookKeySecondary) || gamepadLook;
+            bool look = Input.GetKey(_settings.LookKey) || Input.GetKey(_settings.LookKeySecondary) || gamepadLook;
             look &= !IsPaused;
 
             _isControlling = motionInput || look;
@@ -362,8 +382,8 @@ namespace HS
                     lookX = _mouseInX.Value;
                     lookY = _mouseInY.Value;
                 }
-                var pitchDeltaAngle = -lookY * Settings.MouseSense;
-                var headDeltaAngle = lookX * Settings.MouseSense;
+                var pitchDeltaAngle = -lookY * _settings.MouseSense;
+                var headDeltaAngle = lookX * _settings.MouseSense;
 
                 if (gamepadLook)
                 {
