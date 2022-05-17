@@ -14,8 +14,16 @@ namespace HS
     {
         public bool IsControlling { get; set; }
         public bool IsPaused { get; set; }
+        public bool IsRotating { get; set; }
         public float CruiseSpeed { get; set; }
         public float BoostSpeed { get; set; }
+
+        public bool CanMove { get; set; }
+
+        public Vector3 CurrentPosition { get; set; }
+
+        public Quaternion CurrentRotation { get; set; }
+
     }
 
     public class ThirdPersonController : MonoBehaviour, IThirdPersonController
@@ -117,6 +125,10 @@ namespace HS
 
         public System.Func<Vector3, Vector3, Vector3> OnConstraint;
         public bool IsControlling { get { return _isControlling; } set { _isControlling = value; } }
+        public Vector3 CurrentPosition { get => transform.position; set { transform.position = value; } }
+        public Quaternion CurrentRotation { get => transform.rotation; set { transform.rotation = value; } }
+
+        public bool IsRotating { get; set; } = false;
 
         bool _isControlling;
         public static ThirdPersonController Instance;
@@ -134,6 +146,12 @@ namespace HS
 
         /// <summary> Pause the controller </summary>
         public bool IsPaused { get; set; }
+
+        /// <summary>
+        /// Disables/Enables the Third Person controller ability to move the character
+        /// while disabled, you can still look around with the space bar
+        /// </summary>
+        public bool CanMove { get { return _enableMovement; } set { _enableMovement = value; } }
 
         /// <summary> Slots in a new avatar GO. There's a default avatar in here that will
         /// probably not have the right name/role/colors, this function replaces that one. 
@@ -340,6 +358,8 @@ namespace HS
             bool look = Input.GetKey(_settings.LookKey) || Input.GetKey(_settings.LookKeySecondary) || gamepadLook;
             look &= !IsPaused;
 
+            IsRotating = look;
+
             _isControlling = motionInput || look;
             SetCursorState(motionInput || look);
             if (Cursor.visible && !motionInput)
@@ -421,7 +441,6 @@ namespace HS
             // clear at the end of the update
             motionInput = false;
         }
-
 
         void UpdateSpeed()
         {
