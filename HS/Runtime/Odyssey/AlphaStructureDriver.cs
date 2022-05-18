@@ -26,9 +26,6 @@ public class AlphaStructureDriver : MonoBehaviour, IInfoUICapable
     private Guid _guid = Guid.Empty;
     public Transform parentTransform = null;
     public float lastVisit = 0f;                                            // last time the user wisp was in range of this structure
-    public bool neverUnload = false;                                        // never unload textures (for program structures)
-    public Vector3 teleportOffset = Vector3.zero;
-    public List<HS.AutoRotator> autoRotators;
     public Dictionary<string, List<ITextureSlot>> textureSlots;
     public Dictionary<string, List<ITextSlot>> textSlots;
     public IStructureState structuresState;
@@ -188,39 +185,9 @@ public class AlphaStructureDriver : MonoBehaviour, IInfoUICapable
         }
     }
 
-    public void EnableAutoRotators()
-    {
-        if (autoRotators == null) return;
-
-        foreach (HS.AutoRotator ar in autoRotators)
-        {
-            ar.enabled = true;
-        }
-    }
-
-    public void DisableAutoRotators()
-    {
-        if (autoRotators == null) return;
-
-        foreach (HS.AutoRotator ar in autoRotators)
-        {
-            ar.enabled = false;
-        }
-    }
-
     public void SetLOD(int lodLevel)
     {
         if (currentLOD == lodLevel) return;
-
-        if (lodLevel == 0)
-        {
-            //EnableAutoRotators();
-        }
-        else
-        {
-            //DisableAutoRotators();
-        }
-
 
         if (worldBehaviours == null) return;
 
