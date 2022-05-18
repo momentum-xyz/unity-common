@@ -29,7 +29,7 @@ public class EraClockTextSlot : MonoBehaviour, ITextSlot
         Debug.Log("Got Era Time: " + text);
         if (_surfaceDriver == null) return;
 
-        _currentTime = TimeSpan.FromMilliseconds(int.Parse(text));
+        _currentTime = TimeSpan.FromMilliseconds(long.Parse(text));
 
         _isCountingDown = true;
 
@@ -43,13 +43,13 @@ public class EraClockTextSlot : MonoBehaviour, ITextSlot
 
         deltaTimeSum += Time.deltaTime;
 
-        if(deltaTimeSum > 1.0f)
+        if (deltaTimeSum > 1.0f)
         {
             _currentTime = _currentTime.Subtract(TimeSpan.FromSeconds(deltaTimeSum));
             _surfaceDriver.SetClock(_currentTime);
             deltaTimeSum = 0.0f;
         }
-        
+
     }
 
 

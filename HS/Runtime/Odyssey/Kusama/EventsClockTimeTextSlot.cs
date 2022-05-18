@@ -29,7 +29,7 @@ public class EventsClockTimeTextSlot : MonoBehaviour, ITextSlot
 
         if (_surfaceDriver == null) return;
 
-        _currentTime = TimeSpan.FromMilliseconds(int.Parse(text));
+        _currentTime = TimeSpan.FromMilliseconds(long.Parse(text));
 
         _isCountingDown = true;
 
