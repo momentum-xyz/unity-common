@@ -10,7 +10,7 @@ namespace HS
     {
 
         static int blockIdx = 0;
-        static float[] blockRandomPositions = new float[] { 0, 120, 40, 270, 90, 10, 160, 300 };
+        static float[] blockRandomPositions = new float[] { 0, 120, 40, 270, 90, 10, 160, 300, 70, 100,200,320,180,330 };
 
         [SerializeField] float _disappearDuration = 2;
         [SerializeField] float _rotationSpeed = 720;
