@@ -31,7 +31,7 @@ namespace HS
 		}
 		public void SetClock(System.TimeSpan time, string tag= "")
         {
-			foreach (var op in Clocks) if (tag == "" || tag.ToUpper() == op.Tag.ToUpper()) op.Surface.text = $"{time.TotalHours:00}:{time.Minutes:00}:{time.Seconds:00}";
+			foreach (var op in Clocks) if (tag == "" || tag.ToUpper() == op.Tag.ToUpper()) op.Surface.text = $"{time.Hours:00}:{time.Minutes:00}:{time.Seconds:00}";
 		}
 
 		public void SetClock( System.DateTimeOffset time, string tag = "" ) { 
