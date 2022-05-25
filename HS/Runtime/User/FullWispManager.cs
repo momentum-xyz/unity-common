@@ -12,7 +12,6 @@ public class FullWispManager : MonoBehaviour, IInfoUICapable
     public string wispName = "";
     public string wispOrganization = "";
     public bool poolLoaded = false;
-    public Texture2D defaultBadge;
     public GameObject noCoreWisp;
 
     private GameObject _wispCore;
@@ -26,12 +25,6 @@ public class FullWispManager : MonoBehaviour, IInfoUICapable
         _wispCore.transform.parent = this.gameObject.transform;
         _wispCore.transform.localPosition = new Vector3(0, 0, 0);
         avatarDriver = _wispCore.GetComponent<HS.AvatarDriver>();
-
-        if (avatarDriver != null)
-        {
-            avatarDriver.SetBadge(defaultBadge);
-        }
-
         _wispCore.SetActive(false);
         this.gameObject.SetActive(false);
 
@@ -44,7 +37,6 @@ public class FullWispManager : MonoBehaviour, IInfoUICapable
         avatarDriver = _wispCore.GetComponent<HS.AvatarDriver>();
         if (avatarDriver == null) return;
         avatarDriver.SetAvatarName(wispName);
-        avatarDriver.SetBadge(defaultBadge);
         avatarDriver.name = "user " + userID + " " + wispName;
     }
 

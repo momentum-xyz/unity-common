@@ -30,7 +30,6 @@ namespace HS
         [SerializeField] TMP_Text AvatarName;
         [SerializeField] TMP_Text AvatarOrganisation;
         [SerializeField] TMP_Text AvatarRole;
-        [SerializeField] RawImage Badge;
         [SerializeField] Canvas AvatarCanvas;
         [SerializeField] RotationConstraint rotationConstraint;
 
@@ -55,8 +54,6 @@ namespace HS
         /// <summary> Set which role to display for this avatar. [discuss: will there sometimes be -no- role?]
         /// NB: each role also has an associated color! You can set that via SetAvatarColor( HS.AvaRole role )</summary>
         public void SetAvatarRole(string name) => AvatarRole.text = name;
-        /// <summary> Set which badge to display for this avatar. [discuss: will there sometimes be -no- badge?] </summary>
-        public void SetBadge(Texture2D imageWithAlpha) => Badge.texture = imageWithAlpha;
         /// <summary> Displays a 'chatty' effect to denote that the avatar is engaged in some chat (not meant as a 'do not disturb' notif) </summary>
         public void SetAvatarInvolvement(bool involved) => _involvementEffect?.SetActive(involved);
 
