@@ -50,6 +50,9 @@ public class EraClockTextSlot : MonoBehaviour, ITextSlot
 
         var _currentTimeInMs = DateTimeOffset.Now.ToUnixTimeMilliseconds();
         var _eraTimeElapsed = _eraTimeInMs - (_currentTimeInMs - _timeOfLatestUpdate);
+
+        if (_eraTimeElapsed < 0) _eraTimeElapsed = 0;
+
         _surfaceDriver.SetClock(TimeSpan.FromMilliseconds(_eraTimeElapsed));
         deltaTimeSum = 0.0f;
     }
