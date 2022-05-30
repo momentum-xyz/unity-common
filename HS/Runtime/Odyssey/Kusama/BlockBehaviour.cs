@@ -42,33 +42,42 @@ public class BlockBehaviour : MonoBehaviour, IEffectsTrigger, IWorldBehaviour, I
         if (type == 11)
         {
             var blockStateDriver = GetComponent<HS.BlockStateVisualsDriver>();
-            StartCoroutine(blockStateDriver.Validate());
+
+            try
+            {
+                StartCoroutine(blockStateDriver.Validate());
+            }
+            catch (Exception e)
+            {
+
+            }
+
         }
     }
 
     public void InitBehaviour()
     {
-    
+
     }
 
     public void UpdatePrivacy(bool isPrivate, bool currentUserCanEnter)
     {
-   
+
     }
 
     public void UpdateLOD(int lodLevel)
     {
-     
+
     }
 
     public void UpdateBehaviour(float dt)
     {
-       
+
     }
 
     public void FixedUpdateBehaviour(float dt)
     {
-     
+
     }
 
     public void SetState<T>(string label, T value)
