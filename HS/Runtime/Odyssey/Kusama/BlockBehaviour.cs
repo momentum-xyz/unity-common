@@ -43,14 +43,10 @@ public class BlockBehaviour : MonoBehaviour, IEffectsTrigger, IWorldBehaviour, I
         {
             var blockStateDriver = GetComponent<HS.BlockStateVisualsDriver>();
 
-            try
-            {
-                StartCoroutine(blockStateDriver.Validate());
-            }
-            catch (Exception e)
-            {
+            if (!this.gameObject.activeInHierarchy) return;
 
-            }
+            StartCoroutine(blockStateDriver.Validate());
+
 
         }
     }
