@@ -1,0 +1,18 @@
+{
+    "name": "TouchscreenInput.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:569b36e83e000beec9fc2b8ade46c425"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
