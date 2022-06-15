@@ -7,6 +7,7 @@
 using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using Momentum.UnityCommon.TouchscreenInput;
 
 namespace HS
 {
@@ -324,6 +325,15 @@ namespace HS
                         motionInput = true;
                         deltaPosition -= transform.up;
                     }
+
+                    float screenGoUp = Devices.joystick.y;
+                    float screenGoSideways = Devices.joystick.x;
+                    if (screenGoUp != 0 || screenGoSideways != 0)
+                    {
+                        motionInput = true;
+                        deltaPosition += transform.forward * screenGoUp;
+                        deltaPosition += transform.right * screenGoSideways;
+                    }
                 }
 
                 // Calc acceleration
@@ -351,19 +361,19 @@ namespace HS
             }
 
 
-            float gamepadLookY = Input.GetAxis("GamepadLookY");
-            float gamepadLookX = Input.GetAxis("GamepadLookX");
-            bool gamepadLook = Mathf.Abs(gamepadLookY) > DEADZONE || Mathf.Abs(gamepadLookX) > DEADZONE;
-            // Looking around
-            bool look = Input.GetKey(_settings.LookKey) || Input.GetKey(_settings.LookKeySecondary) || gamepadLook;
-            look &= !IsPaused;
+            // float gamepadLookY = Input.GetAxis("GamepadLookY");
+            // float gamepadLookX = Input.GetAxis("GamepadLookX");
+            // bool gamepadLook = Mathf.Abs(gamepadLookY) > DEADZONE || Mathf.Abs(gamepadLookX) > DEADZONE;
+            // // Looking around
+            // bool look = Input.GetKey(_settings.LookKey) || Input.GetKey(_settings.LookKeySecondary) || gamepadLook;
+            // look &= !IsPaused;
 
-            IsRotating = look;
+            // IsRotating = look;
 
-            _isControlling = motionInput || look;
-            SetCursorState(motionInput || look);
-            if (Cursor.visible && !motionInput)
-                return;
+            // _isControlling = motionInput || look;
+            // SetCursorState(motionInput || look);
+            // if (Cursor.visible && !motionInput)
+            //     return;
 
             // Rotation
             if (_enableRotation)
@@ -393,8 +403,11 @@ namespace HS
                             transform.parent.InverseTransformDirection(transform.right)
                         );
 
-                var lookX = Input.GetAxis("Mouse X");
-                var lookY = Input.GetAxis("Mouse Y");
+                // var lookX = Input.GetAxis("Mouse X");
+                // var lookY = Input.GetAxis("Mouse Y");
+                var lookX = Devices.touchpad.x;
+                var lookY = Devices.touchpad.y;
+                
                 if (CinematicMode)
                 {
                     _mouseInX.Update(lookX, Time.deltaTime, _lookForce);
@@ -405,11 +418,11 @@ namespace HS
                 var pitchDeltaAngle = -lookY * _settings.MouseSense;
                 var headDeltaAngle = lookX * _settings.MouseSense;
 
-                if (gamepadLook)
-                {
-                    pitchDeltaAngle = gamepadLookY * _gamepadSense;
-                    headDeltaAngle = gamepadLookX * _gamepadSense;
-                }
+                // if (gamepadLook)
+                // {
+                //     pitchDeltaAngle = gamepadLookY * _gamepadSense;
+                //     headDeltaAngle = gamepadLookX * _gamepadSense;
+                // }
 
                 curHeading += headDeltaAngle;
                 curPitch += pitchDeltaAngle;
