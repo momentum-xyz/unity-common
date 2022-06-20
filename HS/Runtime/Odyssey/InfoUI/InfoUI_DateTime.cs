@@ -44,12 +44,16 @@ public class InfoUI_DateTime : MonoBehaviour, IInfoUI_TextLabel
 
     string ConvertTextToDateTime(string text)
     {
-        DateTime dateFromString = DateTime.ParseExact(text, DateTimeFormat, CultureInfo.InvariantCulture);
+        try
+        {
+            DateTime dateFromString = DateTime.ParseExact(text, DateTimeFormat, CultureInfo.InvariantCulture);
+            DateTime localTime = dateFromString.ToLocalTime();
 
-        Debug.Log(dateFromString);
-        // 21/06/2022 06:00:00
-
-
-        return "";
+            return localTime.ToString(DateTimeFormat);
+        }
+        catch (Exception e)
+        {
+            return text;
+        }
     }
 }
