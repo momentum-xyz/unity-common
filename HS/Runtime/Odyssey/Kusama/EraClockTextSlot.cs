@@ -9,8 +9,9 @@ public class EraClockTextSlot : MonoBehaviour, ITextSlot
 
     HS.MultiSurfaceDriver _surfaceDriver;
 
-    TimeSpan _currentTime;
     bool _isCountingDown = false;
+    long _timeOfLatestUpdate;
+    long _eraTimeInMs;
 
     float deltaTimeSum = 0.0f;
 
@@ -27,13 +28,15 @@ public class EraClockTextSlot : MonoBehaviour, ITextSlot
     public void SetText(string label, string text)
     {
         Debug.Log("Got Era Time: " + text);
+
         if (_surfaceDriver == null) return;
 
-        _currentTime = TimeSpan.FromMilliseconds(long.Parse(text));
+        _eraTimeInMs = long.Parse(text);
 
+        _timeOfLatestUpdate = DateTimeOffset.Now.ToUnixTimeMilliseconds();
         _isCountingDown = true;
 
-        _surfaceDriver.SetClock(_currentTime);
+        _surfaceDriver.SetClock(TimeSpan.FromMilliseconds(_eraTimeInMs));
 
     }
 
@@ -43,13 +46,15 @@ public class EraClockTextSlot : MonoBehaviour, ITextSlot
 
         deltaTimeSum += Time.deltaTime;
 
-        if (deltaTimeSum > 1.0f)
-        {
-            _currentTime = _currentTime.Subtract(TimeSpan.FromSeconds(deltaTimeSum));
-            _surfaceDriver.SetClock(_currentTime);
-            deltaTimeSum = 0.0f;
-        }
+        if (deltaTimeSum < 1.0f) return;
 
+        var _currentTimeInMs = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+        var _eraTimeElapsed = _eraTimeInMs - (_currentTimeInMs - _timeOfLatestUpdate);
+
+        if (_eraTimeElapsed < 0) _eraTimeElapsed = 0;
+
+        _surfaceDriver.SetClock(TimeSpan.FromMilliseconds(_eraTimeElapsed));
+        deltaTimeSum = 0.0f;
     }
 
 

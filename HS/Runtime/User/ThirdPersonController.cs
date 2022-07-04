@@ -355,7 +355,7 @@ namespace HS
             float gamepadLookX = Input.GetAxis("GamepadLookX");
             bool gamepadLook = Mathf.Abs(gamepadLookY) > DEADZONE || Mathf.Abs(gamepadLookX) > DEADZONE;
             // Looking around
-            bool look = Input.GetKey(_settings.LookKey) || Input.GetKey(_settings.LookKeySecondary) || gamepadLook;
+            bool look = Input.GetKey(_settings.LookKey) || Input.GetKey(_settings.LookKeySecondary) || gamepadLook || Input.GetMouseButton(1);
             look &= !IsPaused;
 
             IsRotating = look;

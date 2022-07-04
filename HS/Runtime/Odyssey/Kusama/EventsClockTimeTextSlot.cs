@@ -9,9 +9,10 @@ public class EventsClockTimeTextSlot : MonoBehaviour, ITextSlot
 
     HS.MultiSurfaceDriver _surfaceDriver;
 
-    TimeSpan _currentTime;
     bool _isCountingDown = false;
     float _deltaTimeSum = 0.0f;
+    long _timeOfLatestUpdate;
+    long _eraTimeInMs;
 
     void Awake()
     {
@@ -29,11 +30,10 @@ public class EventsClockTimeTextSlot : MonoBehaviour, ITextSlot
 
         if (_surfaceDriver == null) return;
 
-        _currentTime = TimeSpan.FromMilliseconds(long.Parse(text));
-
+        _eraTimeInMs = long.Parse(text);
+        _timeOfLatestUpdate = DateTimeOffset.Now.ToUnixTimeMilliseconds();
         _isCountingDown = true;
-
-        _surfaceDriver.SetClock(_currentTime);
+        _surfaceDriver.SetClock(TimeSpan.FromMilliseconds(_eraTimeInMs));
     }
 
     void Update()
@@ -42,12 +42,15 @@ public class EventsClockTimeTextSlot : MonoBehaviour, ITextSlot
 
         _deltaTimeSum += Time.deltaTime;
 
-        if (_deltaTimeSum > 1.0f)
-        {
-            _currentTime = _currentTime.Subtract(TimeSpan.FromSeconds(_deltaTimeSum));
-            _surfaceDriver.SetClock(_currentTime);
-            _deltaTimeSum = 0.0f;
-        }
+        if (_deltaTimeSum < 1.0f) return;
+
+        var _currentTimeInMs = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+        var _eraTimeElapsed = _eraTimeInMs - (_currentTimeInMs - _timeOfLatestUpdate);
+
+        if (_eraTimeElapsed < 0) _eraTimeElapsed = 0;
+
+        _surfaceDriver.SetClock(TimeSpan.FromMilliseconds(_eraTimeElapsed));
+        _deltaTimeSum = 0.0f;
 
     }
 
